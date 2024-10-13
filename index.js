@@ -78,7 +78,6 @@ class Game{
   switchPlayer() {
     // this.currPlayerIndex = this.currPlayerIndex === 0 ? 1 : 0; 
     this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X'
-    console.log('currPlayer', this.currentPlayer); 
   }
 
   //apply an event listener on all the buttons
@@ -88,9 +87,7 @@ class Game{
   }
 
   updateDOM(event){
-    console.log(event)
-    console.log(document.getElementById(`square${event.target.id}`))
-    document.getElementById(`${event.target.id}`).innerText = this.currentPlayer;
+    event.target.innerText = this.currentPlayer;
    }
 
    updateScore(){
@@ -103,16 +100,13 @@ class Game{
   //and update the board
   //it should also switch the currentPlayer
   handleClick(e) {
-    console.log('I am in handleClick');
     const id = e.target.id; 
     const index = id[id.length - 1]
     //update the board with the currentPlayer
-    console.log('gamebordIndex', this.gameBoard.board[index]);
 
     if (this.gameBoard.board[index] === '') {
       this.gameBoard.updateBoard(index, this.currentPlayer);
       this.updateDOM(e); 
-      console.log(this.gameBoard.board);
       this.gameBoard.checkWin(); 
 
       if (this.gameBoard.win === true) {
@@ -123,7 +117,6 @@ class Game{
 
       this.switchPlayer();
     }
-    
   }
 
   refresh() {
