@@ -7,7 +7,10 @@
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-  <div id="board">
+  <header>
+    <h1 class="header">Tic Tac Toe</h1>
+  </header>
+  <section id="board">
     <div class="square" id="square0"></div>
     <div class="square" id="square1"></div>
     <div class="square" id="square2"></div>
@@ -17,9 +20,13 @@
     <div class="square" id="square6"></div>
     <div class="square" id="square7"></div>
     <div class="square" id="square8"></div>
-  </div>  
-  <span id='X'></span>
-	<span id='O'></span>
+  </section>  
+  <section class="scores">
+    <h2>Scores</h2>
+    <h3>X's score: <span id='X'> </span></h3>
+    <h3>O's score: <span id='O'> </span></h3>
+  </section>
+  
   <script src="./index.js"></script>
 </body>
 </html>
