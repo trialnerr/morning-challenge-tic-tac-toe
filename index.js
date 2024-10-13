@@ -9,13 +9,14 @@
 // - each player should be able to play 
 class Player{
   constructor(str) {
-    this.player = str; 
+    this.letter = str; 
     this.score = 0; 
   }
 
   updateScore() {
     this.score++; 
   }
+
 }
 
 //there should be a board
@@ -67,17 +68,21 @@ class Board{
 //- make all the buttons have an eventListener
 class Game{
   constructor() {
-    this.players = ['X', 'O']; 
+    this.players = [new Player('X'), new Player('O')]; 
     this.scores = { 'X' : 0, 'O': 0 }
     this.gameBoard = new Board(); 
     // this.currPlayerIndex = 0; 
-    this.currentPlayer = 'X'; 
+    this.currentPlayer = this.players[0]; 
   }
 
   //if the currPlayer was X switch to O and O switch to X
   switchPlayer() {
-    // this.currPlayerIndex = this.currPlayerIndex === 0 ? 1 : 0; 
-    this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X'
+    
+    this.currentPlayer =
+      this.currentPlayer === this.players[0]
+        ? this.players[1]
+        : this.players[0];
+    
   }
 
   //apply an event listener on all the buttons
@@ -87,34 +92,41 @@ class Game{
   }
 
   updateDOM(event){
-    event.target.innerText = this.currentPlayer;
-   }
+    event.target.innerText = this.currentPlayer.letter;
+  }
+  
+  updateDisplay() {
+    document.querySelector('#X').innerText = this.players[0].score; 
+    document.querySelector('#O').innerText = this.players[1].score; 
+  }
 
-   updateScore(){
-    this.scores[this.currentPlayer] ++
-    console.log(this.scores)
-    document.querySelector(`#X`).innerText = `X: ${this.scores['X']}`
-    document.querySelector(`#O`).innerText = `O: ${this.scores['O']}`
-}
-  //when a button is clicked, i want to be able to get the id of the clicked button and return it
-  //and update the board
-  //it should also switch the currentPlayer
+
   handleClick(e) {
+    
+    //grab the id of the clicked button 
     const id = e.target.id; 
-    const index = id[id.length - 1]
-    //update the board with the currentPlayer
+    const index = id[id.length - 1];
 
     if (this.gameBoard.board[index] === '') {
-      this.gameBoard.updateBoard(index, this.currentPlayer);
+      //update the board with the currentPlayer, 
+      // update the dom and check win
+      this.gameBoard.updateBoard(index, this.currentPlayer.letter);
       this.updateDOM(e); 
       this.gameBoard.checkWin(); 
 
+      //if there is a win updatescore, updateDisplay and refresh
       if (this.gameBoard.win === true) {
-        this.updateScore();
-        this.refresh(); 
+        this.currentPlayer.updateScore(); 
+        this.updateDisplay(); 
+        this.refresh();
         this.gameBoard.win = false; 
       }
-
+      if (this.gameBoard.board.every(spot => spot !== '')) {
+        console.log('DRAW')
+        this.refresh(); 
+      }
+       
+      //switch player
       this.switchPlayer();
     }
   }
@@ -122,21 +134,22 @@ class Game{
   refresh() {
     //loop through this.gameBoard and if there is something there 
     //query that thing from the dom and make it have nothing
-    
     this.gameBoard.board.forEach((item, index) => {
       if (item !== '') {
         document.querySelector(`#square${index}`).innerText = ''; 
       }
     })
     this.gameBoard.board = Array(9).fill(""); 
-    this.currentPlayer = 'X'; 
+    this.currentPlayer = this.players[0];
  }
 }
 
+
 const currGame = new Game(); 
 currGame.applyEventListener(); 
-//account for draws! 
-//find a way of integrating the player class? 
-//have a seperate clas s
+//account for draws!  (done)
+//find a way of integrating the player class? (done)
+//have a seperate class for managing dom elements
+
 
 
