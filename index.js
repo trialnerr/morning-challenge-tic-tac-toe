@@ -62,17 +62,15 @@ class Board{
 //- make all the buttons have an eventListener
 class Game{
   constructor() {
-    this.players = ['X', 'O']; 
-    this.scores = {'X' : 0, 'O': 0}
+    this.players = [new Player('X'), new Player('O')]; 
     this.gameBoard = new Board(); 
-    this.currPlayerIndex = 0; 
-    this.currentPlayer = 'X'; 
+    this.currentPlayer = this.players[0]; 
   }
 
   //if the currPlayer was X switch to O and O switch to X
   switchPlayer() {
-    // this.currPlayerIndex = this.currPlayerIndex === 0 ? 1 : 0; 
-    this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X'
+    this.currentPlayer =
+      this.currentPlayer.player === 'X' ? this.players[1] : this.players[0];
     console.log('player switched'); 
   }
 
@@ -84,14 +82,13 @@ class Game{
 
   updateDOM(event) {
     console.log(event);
-    event.target.innerText = this.currentPlayer;
+    event.target.innerText = this.currentPlayer.player;
    }
 
-   updateScore(){
-    this.scores[this.currentPlayer] ++
-     console.log(this.scores); 
-    document.querySelector(`#X`).innerText = this.scores['X'];
-    document.querySelector(`#O`).innerText = this.scores['O'];
+  updateScore() {
+    this.currentPlayer.updateScore(); 
+    document.querySelector(`#X`).innerText = this.players[0].score; 
+    document.querySelector(`#O`).innerText = this.players[1].score;
 }
   //when a button is clicked, i want to be able to get the id of the clicked button and return it
   //and update the board
@@ -109,7 +106,7 @@ class Game{
  
     //we do this so that we dont update a space that already has been updated
     if (this.gameBoard.board[index] === '') {
-      this.gameBoard.updateBoard(index, this.currentPlayer);
+      this.gameBoard.updateBoard(index, this.currentPlayer.player);
       this.updateDOM(e); 
       console.log(this.gameBoard.board);
       this.gameBoard.checkWin(); 
@@ -118,7 +115,7 @@ class Game{
         this.updateScore();
         const game = this; 
         //display a you won message
-        winMessage.textContent = `${this.currentPlayer} wins!`
+        winMessage.textContent = `${this.currentPlayer.player} wins!`
   
         setTimeout(() => {
           this.refresh();
@@ -153,7 +150,7 @@ class Game{
       }
     })
     this.gameBoard.board = Array(9).fill(""); 
-    this.currentPlayer = 'X'; 
+    this.currentPlayer = this.players[0];
     
  }
 }
@@ -162,10 +159,8 @@ const currGame = new Game();
 currGame.applyEventListener(); 
 
 
-//account for draws! 
-//find a way of integrating the player class
 //confetti 
 //draw a line across on win
 //sounds? 
-//there is a bug, the first time there was a draw, x won. 
 //add playing against the computer
+//make it responsive!
