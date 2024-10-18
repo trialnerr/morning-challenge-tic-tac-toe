@@ -82,16 +82,16 @@ class Game{
     squares.forEach(square => square.addEventListener('click', (e) => this.handleClick(e)));
   }
 
-  updateDOM(event){
-    console.log(document.getElementById(`square${event.target.id}`))
-    document.getElementById(`${event.target.id}`).innerText = this.currentPlayer;
+  updateDOM(event) {
+    console.log(event);
+    event.target.innerText = this.currentPlayer;
    }
 
    updateScore(){
     this.scores[this.currentPlayer] ++
-    console.log(this.scores)
-    document.querySelector(`#X`).innerText = `X: ${this.scores['X']}`
-    document.querySelector(`#O`).innerText = `O: ${this.scores['O']}`
+     console.log(this.scores); 
+    document.querySelector(`#X`).innerText = this.scores['X'];
+    document.querySelector(`#O`).innerText = this.scores['O'];
 }
   //when a button is clicked, i want to be able to get the id of the clicked button and return it
   //and update the board
@@ -102,7 +102,7 @@ class Game{
     } 
  
     const id = e.target.id; 
-    const index = id[id.length - 1]
+    const index = id[id.length - 1]; 
     const winMessage = document.querySelector('.winMessage'); 
     //update the board with the currentPlayer
     console.log('gamebordIndex', this.gameBoard.board[index]);
@@ -130,8 +130,8 @@ class Game{
 
       //if the board is full and no empty strings at all 
       //end the game and reset. 
-      if (this.gameBoard.board.every(el => el !== '')) {
-        winMessage.textContent = 'There was a draw!';
+     else if (this.gameBoard.board.every(el => el !== '')) {
+        winMessage.textContent = 'Draw!';
         setTimeout(() => {
           this.refresh(); 
           winMessage.textContent = '';
@@ -164,9 +164,8 @@ currGame.applyEventListener();
 
 //account for draws! 
 //find a way of integrating the player class
-//change cursor to pencil icon 
-//center stuff 
 //confetti 
 //draw a line across on win
 //sounds? 
-
+//there is a bug, the first time there was a draw, x won. 
+//add playing against the computer
