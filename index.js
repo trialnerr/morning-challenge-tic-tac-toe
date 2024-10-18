@@ -164,6 +164,9 @@ currGame.applyEventListener();
 
 //account for draws! 
 //find a way of integrating the player class
-
-
+//change cursor to pencil icon 
+//center stuff 
+//confetti 
+//draw a line across on win
+//sounds? 
 
